@@ -1,0 +1,72 @@
+import java.util.NoSuchElementException;
+
+public class Queue<T> {
+    private Node<T> front; // Reference to the front of the queue
+    private Node<T> rear; // Reference to the rear of the queue
+
+    // Node class representing each element in the queue
+    private static class Node<T> {
+        T data;
+        Node<T> next;
+
+        Node(T data) {
+            this.data = data;
+            this.next = null;
+        }
+    }
+
+    // Method to add an element to the rear of the queue (enqueue)
+    public void enqueue(T data) {
+        Node<T> newNode = new Node<>(data);
+        if (isEmpty()) {
+            front = newNode;
+        } else {
+            rear.next = newNode;
+        }
+        rear = newNode;
+    }
+
+    // Method to remove and return the element at the front of the queue (dequeue)
+    public T dequeue() {
+        if (isEmpty()) {
+            throw new NoSuchElementException("Queue is empty");
+        }
+        T data = front.data;
+        front = front.next;
+        if (front == null) {
+            rear = null; // If the queue becomes empty after dequeueing, update the rear reference
+        }
+        return data;
+    }
+
+    // Method to peek at the element at the front of the queue without removing it
+    public T peek() {
+        if (isEmpty()) {
+            throw new NoSuchElementException("Queue is empty");
+        }
+        return front.data;
+    }
+
+    // Method to check if the queue is empty
+    public boolean isEmpty() {
+        return front == null;
+    }
+
+    public static void main(String[] args) {
+        Queue<Integer> queue = new Queue<>();
+
+        // Enqueue elements into the queue
+        queue.enqueue(10);
+        queue.enqueue(20);
+        queue.enqueue(30);
+
+        // Peek at the front element
+        System.out.println("Front element: " + queue.peek()); // Output: 10
+
+        // Dequeue elements from the queue and display them
+        System.out.println("Dequeuing elements:");
+        while (!queue.isEmpty()) {
+            System.out.println(queue.dequeue());
+        }
+    }
+}
